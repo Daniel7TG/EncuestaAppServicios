@@ -649,30 +649,82 @@ h2.question-title {
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
+  body {
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling entirely */
+  }
+
   .survey-container {
-    padding: 24px 20px;
-    border-radius: var(--border-radius-md);
+    padding: 20px 15px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg-dark); /* Solid background on mobile, remove card background */
+  }
+
+  .survey-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .screen-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .answers-area {
+    /* Limit height and avoid scrolling on small devices if possible, or hide overflow if requested */
+    max-height: none; 
+    overflow: hidden; 
+    margin-bottom: 10px;
+  }
+
+  .option-card {
+    padding: 12px 15px; /* Tighter padding for mobile */
   }
   
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
   
   h2.question-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .question-description {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
   }
   
   .btn {
-    padding: 10px 20px;
+    padding: 12px 15px;
     font-size: 0.95rem;
   }
   
   .info-badges {
     gap: 8px;
+    margin-bottom: 20px;
   }
   
   .badge-item {
-    padding: 8px 14px;
-    font-size: 0.8rem;
+    padding: 6px 12px;
+    font-size: 0.75rem;
   }
 }

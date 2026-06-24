@@ -35,9 +35,19 @@ app.post('/api/encuesta', (req, res) => {
     const fileData = fs.readFileSync(DATA_FILE, 'utf8');
     const encuestas = JSON.parse(fileData);
 
+    // Get Client IP
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+
+    // Check if IP already responded
+    const hasResponded = encuestas.some(e => e.ip === clientIp);
+    if (hasResponded) {
+      return res.status(403).json({ error: 'Ya hemos recibido una respuesta desde tu conexión. ¡Gracias por participar!' });
+    }
+
     // Create new survey entry
     const newEncuesta = {
       id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+      ip: clientIp,
       fecha: new Date().toISOString(),
       nombre: nombre || '',
       telefono: telefono || '',
@@ -58,6 +68,20 @@ app.post('/api/encuesta', (req, res) => {
   } catch (error) {
     console.error('Error al guardar la encuesta:', error);
     return res.status(500).json({ error: 'Hubo un error en el servidor al guardar la encuesta.' });
+  }
+});
+
+// API Endpoint to check if IP already responded
+app.get('/api/check-ip', (req, res) => {
+  try {
+    const fileData = fs.readFileSync(DATA_FILE, 'utf8');
+    const encuestas = JSON.parse(fileData);
+    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+    const hasResponded = encuestas.some(e => e.ip === clientIp);
+    return res.json({ hasResponded });
+  } catch (error) {
+    console.error('Error al verificar IP:', error);
+    return res.status(500).json({ error: 'Error del servidor' });
   }
 });
 

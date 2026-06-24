@@ -127,7 +127,26 @@ const inputName = document.getElementById("inputName");
 const inputPhone = document.getElementById("inputPhone");
 
 // Event Listeners
-btnStart.addEventListener("click", () => navigateToStep(0));
+btnStart.addEventListener("click", async () => {
+  btnStart.disabled = true;
+  const originalHtml = btnStart.innerHTML;
+  btnStart.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  try {
+    const response = await fetch('/api/check-ip');
+    const result = await response.json();
+    if (result.hasResponded) {
+      alert("Ya hemos recibido una respuesta desde tu conexión. ¡Gracias por participar!");
+      btnStart.innerHTML = originalHtml;
+      btnStart.disabled = false;
+      return;
+    }
+  } catch (e) {
+    console.error("Error verifying IP:", e);
+  }
+  btnStart.innerHTML = originalHtml;
+  btnStart.disabled = false;
+  navigateToStep(0);
+});
 btnBack.addEventListener("click", () => navigateToStep(currentStep - 1));
 btnSkip.addEventListener("click", () => handleSkip());
 btnNext.addEventListener("click", () => handleNext());
@@ -400,8 +419,25 @@ function handleNext() {
 
   // Validation
   if (question.required && !userAnswers[question.id]) {
-    showValidation("Esta pregunta es obligatoria para comenzar la encuesta.");
+    showValidation("Esta pregunta es obligatoria para continuar.");
     return;
+  }
+
+  // Branching Logic
+  // If Q1 is "No", end survey immediately
+  if (currentStep === 0 && userAnswers.r1 === 'No') {
+    handleSubmit();
+    return;
+  }
+
+  // If last question (Q6), determine if we show Contact screen
+  if (currentStep === questions.length - 1) {
+    const r6Answer = userAnswers.r6 || '';
+    if (r6Answer === 'No' || r6Answer === '') {
+      // Skip contact screen, end survey
+      handleSubmit();
+      return;
+    }
   }
 
   // Go to next step
@@ -417,6 +453,12 @@ function handleSkip() {
     userAnswers[question.id] = [];
   } else {
     userAnswers[question.id] = "";
+  }
+
+  // If skipping last question (Q6), skip contact screen
+  if (currentStep === questions.length - 1) {
+    handleSubmit();
+    return;
   }
 
   navigateToStep(currentStep + 1);

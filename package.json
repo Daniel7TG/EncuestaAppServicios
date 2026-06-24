@@ -1,7 +1,7 @@
 {
   "name": "encuestaappservicios",
   "version": "1.0.0",
-  "description": "",
+  "description": "Este es un proyecto desarrollado con **Node.js** (Express) en el backend y un frontend altamente responsivo y dinámico, utilizando HTML5 semántico, CSS3 moderno (con efectos de glassmorphic, gradientes dinámicos y micro-animaciones) y Javascript puro.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
