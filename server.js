@@ -21,6 +21,15 @@ if (!fs.existsSync(DATA_FILE)) {
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Helper to extract clean client IP (first IP in X-Forwarded-For list if proxy is used)
+function getClientIp(req) {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (forwarded && typeof forwarded === 'string') {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.socket.remoteAddress || req.ip;
+}
+
 // API Endpoint to save response
 app.post('/api/encuesta', (req, res) => {
   try {
@@ -36,10 +45,15 @@ app.post('/api/encuesta', (req, res) => {
     const encuestas = JSON.parse(fileData);
 
     // Get Client IP
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+    const clientIp = getClientIp(req);
 
-    // Check if IP already responded
-    const hasResponded = encuestas.some(e => e.ip === clientIp);
+    // Check if IP already responded (normalizing database records as well)
+    const hasResponded = encuestas.some(e => {
+      if (!e.ip) return false;
+      const savedIp = e.ip.split(',')[0].trim();
+      return savedIp === clientIp;
+    });
+
     if (hasResponded) {
       return res.status(403).json({ error: 'Ya hemos recibido una respuesta desde tu conexión. ¡Gracias por participar!' });
     }
@@ -76,8 +90,12 @@ app.get('/api/check-ip', (req, res) => {
   try {
     const fileData = fs.readFileSync(DATA_FILE, 'utf8');
     const encuestas = JSON.parse(fileData);
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
-    const hasResponded = encuestas.some(e => e.ip === clientIp);
+    const clientIp = getClientIp(req);
+    const hasResponded = encuestas.some(e => {
+      if (!e.ip) return false;
+      const savedIp = e.ip.split(',')[0].trim();
+      return savedIp === clientIp;
+    });
     return res.json({ hasResponded });
   } catch (error) {
     console.error('Error al verificar IP:', error);
