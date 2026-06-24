@@ -207,32 +207,32 @@ function navigateToStep(step) {
   if (step === -1) {
     // Intro Screen
     progressContainer.style.display = "none";
-    screenIntro.style.display = "block";
+    screenIntro.style.display = "flex";
     setTimeout(() => screenIntro.classList.add("active"), 50);
   } else if (step === "demographics") {
     // Demographics Screen
     progressContainer.style.display = "block";
     progressBarFill.style.width = `0%`;
     progressPercent.innerText = `0%`;
-    screenDemographics.style.display = "block";
+    screenDemographics.style.display = "flex";
     setTimeout(() => screenDemographics.classList.add("active"), 50);
   } else if (step >= 0 && step < questions.length) {
     // Quiz Questions
     progressContainer.style.display = "block";
     updateProgressBar();
-    screenQuiz.style.display = "block";
+    screenQuiz.style.display = "flex";
     renderQuestion(step);
     setTimeout(() => screenQuiz.classList.add("active"), 50);
   } else if (step === questions.length) {
     // Contact Info Screen
     progressContainer.style.display = "block";
     updateProgressBar();
-    screenContact.style.display = "block";
+    screenContact.style.display = "flex";
     setTimeout(() => screenContact.classList.add("active"), 50);
   } else if (step === questions.length + 1) {
     // Success Screen
     progressContainer.style.display = "none";
-    screenSuccess.style.display = "block";
+    screenSuccess.style.display = "flex";
     setTimeout(() => screenSuccess.classList.add("active"), 50);
   }
 }
