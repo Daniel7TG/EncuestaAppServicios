@@ -477,9 +477,27 @@ function hideValidation() {
 
 // Submit survey data to the Node Express Backend
 async function handleSubmit() {
-  // Capture final contact fields
-  userAnswers.nombre = inputName.value.trim();
-  userAnswers.telefono = inputPhone.value.trim();
+  // Capture and validate final contact fields only if on the Contact Info screen
+  if (currentStep === questions.length) {
+    userAnswers.nombre = inputName.value.trim();
+    const phoneValue = inputPhone.value.trim();
+
+    // Validación del teléfono
+    if (!phoneValue) {
+      alert("El número de teléfono es obligatorio.");
+      return;
+    }
+    if (!/^[0-9\s]+$/.test(phoneValue)) {
+      alert("El número de teléfono solo debe contener números y espacios.");
+      return;
+    }
+    const digitCount = phoneValue.replace(/\s/g, '').length;
+    if (digitCount < 10 || digitCount > 12) {
+      alert("El número de teléfono debe tener entre 10 y 12 dígitos.");
+      return;
+    }
+    userAnswers.telefono = phoneValue;
+  }
 
   // Set submitting visual state
   btnSubmit.disabled = true;
