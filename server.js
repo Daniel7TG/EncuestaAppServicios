@@ -73,8 +73,8 @@ app.get('/api/encuesta', (req, res) => {
   }
 });
 
-// Serve frontend for all other requests
-app.get('*', (req, res) => {
+// Serve frontend
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
