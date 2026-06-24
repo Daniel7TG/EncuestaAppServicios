@@ -33,7 +33,7 @@ function getClientIp(req) {
 // API Endpoint to save response
 app.post('/api/encuesta', (req, res) => {
   try {
-    const { nombre, telefono, r1, r2, r3, r4, r5, r6 } = req.body;
+    const { nombre, telefono, genero, edad, r1, r2, r3, r4, r5, r6 } = req.body;
 
     // Validate that required answers are present (r1 is required, others can be empty/optional but let's accept what is sent)
     if (r1 === undefined) {
@@ -65,6 +65,8 @@ app.post('/api/encuesta', (req, res) => {
       fecha: new Date().toISOString(),
       nombre: nombre || '',
       telefono: telefono || '',
+      genero: genero || '',
+      edad: edad || '',
       r1: r1,
       r2: r2 || '',
       r3: r3 || '',

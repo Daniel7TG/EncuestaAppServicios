@@ -67,6 +67,49 @@
       </div>
     </div>
 
+    <!-- Screen 1.5: Demographics -->
+    <div class="survey-screen" id="screenDemographics" style="display: none;">
+      <div class="screen-content">
+        <span class="question-category">Paso Opcional</span>
+        <h2 class="question-title">¿Nos cuentas un poco sobre ti?</h2>
+        <p class="question-description" style="display: block;">
+          Esta información nos ayuda a entender mejor a nuestra comunidad.
+        </p>
+
+        <div class="answers-area" style="margin-top: 1.5rem;">
+          <h4 style="margin-bottom: 0.5rem; font-size: 1rem; color: var(--text-color);">Género</h4>
+          <div class="demographics-grid" id="generoOptions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+            <div class="option-card option-card-single demo-genero" data-value="Femenino"><div class="option-text">Femenino</div></div>
+            <div class="option-card option-card-single demo-genero" data-value="Masculino"><div class="option-text">Masculino</div></div>
+            <div class="option-card option-card-single demo-genero" data-value="Otro"><div class="option-text">Otro</div></div>
+            <div class="option-card option-card-single demo-genero" data-value="Prefiero no decirlo"><div class="option-text">Prefiero no decirlo</div></div>
+          </div>
+
+          <h4 style="margin-bottom: 0.5rem; font-size: 1rem; color: var(--text-color);">Edad</h4>
+          <div class="demographics-grid" id="edadOptions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="option-card option-card-single demo-edad" data-value="Menos de 18"><div class="option-text">Menos de 18</div></div>
+            <div class="option-card option-card-single demo-edad" data-value="18 - 24"><div class="option-text">18 - 24</div></div>
+            <div class="option-card option-card-single demo-edad" data-value="25 - 34"><div class="option-text">25 - 34</div></div>
+            <div class="option-card option-card-single demo-edad" data-value="35 - 44"><div class="option-text">35 - 44</div></div>
+            <div class="option-card option-card-single demo-edad" data-value="45 - 54"><div class="option-text">45 - 54</div></div>
+            <div class="option-card option-card-single demo-edad" data-value="55 o más"><div class="option-text">55 o más</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="survey-footer">
+        <button id="btnDemographicsBack" class="btn btn-secondary">
+          <i class="fa-solid fa-chevron-left"></i> Atrás
+        </button>
+        <div class="footer-right-buttons" style="display: flex; gap: 1rem; align-items: center;">
+          <button id="btnDemographicsSkip" class="btn btn-text" style="color: rgba(255, 255, 255, 0.9); font-weight: 500; text-decoration: underline;">Omitir</button>
+          <button id="btnDemographicsNext" class="btn btn-primary">
+            Siguiente <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Screen 2: Quiz Question Area -->
     <div class="survey-screen" id="screenQuiz" style="display: none;">
       <div class="screen-content">

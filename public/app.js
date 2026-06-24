@@ -88,6 +88,8 @@ let currentStep = -1; // -1: Intro, 0-5: Questions, 6: Contact Info, 7: Success
 const userAnswers = {
   nombre: "",
   telefono: "",
+  genero: "",
+  edad: "",
   r1: "",
   r2: "",
   r3: "",
@@ -98,6 +100,7 @@ const userAnswers = {
 
 // DOM Elements
 const screenIntro = document.getElementById("screenIntro");
+const screenDemographics = document.getElementById("screenDemographics");
 const screenQuiz = document.getElementById("screenQuiz");
 const screenContact = document.getElementById("screenContact");
 const screenSuccess = document.getElementById("screenSuccess");
@@ -112,6 +115,9 @@ const questionDescription = document.getElementById("questionDescription");
 const answersArea = document.getElementById("answersArea");
 
 const btnStart = document.getElementById("btnStart");
+const btnDemographicsBack = document.getElementById("btnDemographicsBack");
+const btnDemographicsSkip = document.getElementById("btnDemographicsSkip");
+const btnDemographicsNext = document.getElementById("btnDemographicsNext");
 const btnBack = document.getElementById("btnBack");
 const btnSkip = document.getElementById("btnSkip");
 const btnNext = document.getElementById("btnNext");
@@ -143,24 +149,56 @@ btnStart.addEventListener("click", async () => {
   }
   btnStart.innerHTML = originalHtml;
   btnStart.disabled = false;
-  navigateToStep(0);
+  navigateToStep("demographics");
 });
-btnBack.addEventListener("click", () => navigateToStep(currentStep - 1));
+btnBack.addEventListener("click", () => {
+  if (currentStep === 0) {
+    navigateToStep("demographics");
+  } else {
+    navigateToStep(currentStep - 1);
+  }
+});
 btnSkip.addEventListener("click", () => handleSkip());
 btnNext.addEventListener("click", () => handleNext());
 btnContactBack.addEventListener("click", () => navigateToStep(questions.length - 1));
 btnSubmit.addEventListener("click", () => handleSubmit());
 
+btnDemographicsBack.addEventListener("click", () => navigateToStep(-1));
+btnDemographicsSkip.addEventListener("click", () => {
+  userAnswers.genero = "";
+  userAnswers.edad = "";
+  navigateToStep(0);
+});
+btnDemographicsNext.addEventListener("click", () => navigateToStep(0));
+
+// Demographics selection handlers
+document.querySelectorAll(".demo-genero").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".demo-genero").forEach(c => c.classList.remove("selected"));
+    card.classList.add("selected");
+    userAnswers.genero = card.getAttribute("data-value");
+  });
+});
+
+document.querySelectorAll(".demo-edad").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".demo-edad").forEach(c => c.classList.remove("selected"));
+    card.classList.add("selected");
+    userAnswers.edad = card.getAttribute("data-value");
+  });
+});
+
 // Navigation Router
 function navigateToStep(step) {
   // Hide all screens
   screenIntro.style.display = "none";
+  screenDemographics.style.display = "none";
   screenQuiz.style.display = "none";
   screenContact.style.display = "none";
   screenSuccess.style.display = "none";
   
   // Reset animations
-  const screens = [screenIntro, screenQuiz, screenContact, screenSuccess];
+  const screens = [screenIntro, screenDemographics, screenQuiz, screenContact, screenSuccess];
   screens.forEach(s => s.classList.remove("active"));
 
   currentStep = step;
@@ -171,6 +209,13 @@ function navigateToStep(step) {
     progressContainer.style.display = "none";
     screenIntro.style.display = "block";
     setTimeout(() => screenIntro.classList.add("active"), 50);
+  } else if (step === "demographics") {
+    // Demographics Screen
+    progressContainer.style.display = "block";
+    progressBarFill.style.width = `0%`;
+    progressPercent.innerText = `0%`;
+    screenDemographics.style.display = "block";
+    setTimeout(() => screenDemographics.classList.add("active"), 50);
   } else if (step >= 0 && step < questions.length) {
     // Quiz Questions
     progressContainer.style.display = "block";
