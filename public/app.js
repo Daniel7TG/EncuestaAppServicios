@@ -4,7 +4,7 @@ const questions = [
     id: "r1",
     category: "Experiencia",
     title: "¿Ha usado alguna vez algún servicio de tipo reparación, instalación u otro?",
-    description: "Ej. Carpintero, herrero, plomero, electricista, fotógrafo, pintor, etc.",
+    description: "Ej. Carpintero, herrero, plomero, electricista, fotógrafo, mecánico, pintor, etc.",
     type: "single",
     required: true,
     options: [
@@ -20,7 +20,6 @@ const questions = [
     type: "single",
     required: true,
     options: [
-      { text: "Ninguna vez", value: "Ninguna" },
       { text: "1 a 2 veces", value: "1-2 veces" },
       { text: "3 a 5 veces", value: "3-5 veces" },
       { text: "Más de 5 veces", value: "Mas de 5 veces" }
