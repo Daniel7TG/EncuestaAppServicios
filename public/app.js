@@ -117,7 +117,6 @@ const btnSkip = document.getElementById("btnSkip");
 const btnNext = document.getElementById("btnNext");
 const btnContactBack = document.getElementById("btnContactBack");
 const btnSubmit = document.getElementById("btnSubmit");
-const btnRestart = document.getElementById("btnRestart");
 
 const validationMessage = document.getElementById("validationMessage");
 const validationText = document.getElementById("validationText");
@@ -151,7 +150,6 @@ btnSkip.addEventListener("click", () => handleSkip());
 btnNext.addEventListener("click", () => handleNext());
 btnContactBack.addEventListener("click", () => navigateToStep(questions.length - 1));
 btnSubmit.addEventListener("click", () => handleSubmit());
-btnRestart.addEventListener("click", () => resetSurvey());
 
 // Navigation Router
 function navigateToStep(step) {
@@ -531,24 +529,6 @@ async function handleSubmit() {
 function resetSubmitButton() {
   btnSubmit.disabled = false;
   btnSubmit.innerHTML = 'Enviar Encuesta <i class="fa-regular fa-paper-plane"></i>';
-}
-
-// Reset state to reply again
-function resetSurvey() {
-  currentStep = -1;
-  userAnswers.nombre = "";
-  userAnswers.telefono = "";
-  userAnswers.r1 = "";
-  userAnswers.r2 = "";
-  userAnswers.r3 = "";
-  userAnswers.r4 = [];
-  userAnswers.r5 = "";
-  userAnswers.r6 = "";
-
-  inputName.value = "";
-  inputPhone.value = "";
-
-  navigateToStep(-1);
 }
 
 // Initializing application
