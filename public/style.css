@@ -195,7 +195,26 @@ h2.question-title {
   padding-bottom: 40px;
 }
 
-/* Survey Screen Transition styling */
+/* Survey Screen and Content styling */
+.screen-content {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Customize scrollbar for screen-content */
+.screen-content::-webkit-scrollbar {
+  width: 6px;
+}
+.screen-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.screen-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
 .survey-screen {
   opacity: 0;
   transform: translateY(20px);
