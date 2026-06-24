@@ -18,7 +18,7 @@ const questions = [
     title: "¿Cuántas veces en el último año ha necesitado contratar un servicio de mantenimiento o reparación?",
     description: "Por qué importa: Nos ayuda a saber si esta será una aplicación de uso frecuente o de un solo uso.",
     type: "single",
-    required: false,
+    required: true,
     options: [
       { text: "Ninguna vez", value: "Ninguna" },
       { text: "1 a 2 veces", value: "1-2 veces" },
@@ -32,7 +32,7 @@ const questions = [
     title: "Cuando surge una emergencia o necesidad y no tiene un contacto de confianza, ¿cuál es su primer paso para encontrar a alguien?",
     description: "Queremos entender por dónde empiezan las personas su búsqueda de profesionales.",
     type: "single",
-    required: false,
+    required: true,
     options: [
       { text: "Preguntar a familiares/vecinos (Boca a boca)", value: "a) Preguntar a familiares/vecinos (Boca a boca)" },
       { text: "Buscar en grupos de Facebook o WhatsApp de la colonia", value: "b) Buscar en grupos de Facebook o WhatsApp de la colonia" },
@@ -47,7 +47,7 @@ const questions = [
     description: "Por qué importa: El problema principal guiará la propuesta de valor y las garantías de la app (Puedes elegir hasta dos opciones).",
     type: "multi",
     maxChoices: 2,
-    required: false,
+    required: true,
     options: [
       { text: "Que haga un mal trabajo y no dé garantía", value: "a) Que haga un mal trabajo y no dé garantía" },
       { text: "Que altere el precio al final / Precios ocultos", value: "b) Que altere el precio al final / Precios ocultos" },
@@ -61,7 +61,7 @@ const questions = [
     title: "Antes de contratar, ¿qué factor lo convence de elegir a un profesional sobre otro?",
     description: "Nos dice cuál es la característica decisiva para concretar la contratación.",
     type: "single",
-    required: false,
+    required: true,
     options: [
       { text: "Recomendación de un conocido", value: "a) Recomendación de un conocido" },
       { text: "Ver fotos de trabajos anteriores", value: "b) Ver fotos de trabajos anteriores" },
@@ -75,7 +75,7 @@ const questions = [
     title: "Si existiera una aplicación móvil donde pudiera ver a los profesionales de su ciudad, leer reseñas y ver precios base, ¿la utilizaría?",
     description: "Evaluamos el interés real en la propuesta de valor integrada.",
     type: "conditional",
-    required: false,
+    required: true,
     options: [
       { text: "Sí", value: "Sí" },
       { text: "No", value: "No" },
@@ -346,16 +346,6 @@ function selectSingleOption(questionIndex, option, cardElement) {
 
   hideValidation();
   updateNextButtonState(questionIndex);
-
-  // Auto-advance if it's not conditional (gives a fast, gaming feel to the quiz)
-  if (question.type !== "conditional") {
-    setTimeout(() => {
-      // Only auto-advance if we are still on the same step
-      if (currentStep === questionIndex) {
-        handleNext();
-      }
-    }, 350);
-  }
 }
 
 // Toggle handler for Checkboxes
@@ -402,11 +392,16 @@ function limitMultiChoices(maxChoices) {
   }
 }
 
-// Disables Next button on Q1 if not answered yet
+// Disables Next button if required and not answered yet
 function updateNextButtonState(index) {
   const question = questions[index];
   if (question.required) {
-    const answered = !!userAnswers[question.id];
+    let answered = false;
+    if (question.type === "multi") {
+      answered = userAnswers[question.id] && userAnswers[question.id].length > 0;
+    } else {
+      answered = !!userAnswers[question.id];
+    }
     btnNext.disabled = !answered;
   } else {
     btnNext.disabled = false;
@@ -418,7 +413,14 @@ function handleNext() {
   const question = questions[currentStep];
 
   // Validation
-  if (question.required && !userAnswers[question.id]) {
+  let isValid = false;
+  if (question.type === "multi") {
+    isValid = userAnswers[question.id] && userAnswers[question.id].length > 0;
+  } else {
+    isValid = !!userAnswers[question.id];
+  }
+
+  if (question.required && !isValid) {
     showValidation("Esta pregunta es obligatoria para continuar.");
     return;
   }
