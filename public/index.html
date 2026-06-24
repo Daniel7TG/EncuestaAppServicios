@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuesta de Servicios del Hogar y Profesionales</title>
+  <meta name="description" content="Ayúdanos a mejorar la contratación de servicios locales respondiendo esta breve encuesta de 6 preguntas.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css">
+  <!-- FontAwesome Icons for visual flair -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div class="survey-container">
+    <!-- Card header -->
+    <div class="survey-header">
+      <div class="brand">
+        <i class="fa-solid fa-house-laptop brand-icon"></i>
+        <span>ServiConnect <span class="brand-badge">Estudio</span></span>
+      </div>
+      <div class="progress-container" id="progressContainer" style="display: none;">
+        <div class="progress-text">
+          <span>Progreso</span>
+          <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 1: Welcome/Intro -->
+    <div class="survey-screen active" id="screenIntro">
+      <div class="screen-content text-center">
+        <div class="icon-wrapper">
+          <i class="fa-solid fa-comments-dollar main-screen-icon"></i>
+        </div>
+        <h1>¿Cómo contratas profesionales de confianza?</h1>
+        <p class="subtitle">
+          Queremos revolucionar la forma en que encuentras plomeros, electricistas, carpinteros y otros profesionales en tu ciudad. Tu opinión nos ayudará a diseñar la mejor solución.
+        </p>
+        <div class="info-badges">
+          <div class="badge-item">
+            <i class="fa-regular fa-clock"></i>
+            <span>Toma 2 minutos</span>
+          </div>
+          <div class="badge-item">
+            <i class="fa-regular fa-circle-check"></i>
+            <span>6 preguntas breves</span>
+          </div>
+          <div class="badge-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>100% confidencial</span>
+          </div>
+        </div>
+        <button id="btnStart" class="btn btn-primary btn-lg">
+          Comenzar Encuesta <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Screen 2: Quiz Question Area -->
+    <div class="survey-screen" id="screenQuiz" style="display: none;">
+      <div class="screen-content">
+        <!-- Question label / category -->
+        <span class="question-category" id="questionCategory">Categoría</span>
+        
+        <!-- Question title -->
+        <h2 class="question-title" id="questionTitle">Cargando pregunta...</h2>
+        <p class="question-description" id="questionDescription" style="display: none;"></p>
+
+        <!-- Dynamic Answer Area -->
+        <div class="answers-area" id="answersArea">
+          <!-- Filled dynamically by JavaScript -->
+        </div>
+
+        <!-- Feedback or instructions message -->
+        <div class="validation-message" id="validationMessage" style="display: none;">
+          <i class="fa-solid fa-circle-info"></i> <span id="validationText">Por favor, selecciona una opción.</span>
+        </div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="survey-footer">
+        <button id="btnBack" class="btn btn-secondary">
+          <i class="fa-solid fa-chevron-left"></i> Atrás
+        </button>
+        <div class="footer-right-buttons">
+          <button id="btnSkip" class="btn btn-text">Saltar</button>
+          <button id="btnNext" class="btn btn-primary">
+            Siguiente <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Contact & Submit -->
+    <div class="survey-screen" id="screenContact" style="display: none;">
+      <div class="screen-content">
+        <span class="question-category">Último paso</span>
+        <h2 class="question-title">¿Nos compartes tus datos de contacto?</h2>
+        <p class="question-description">
+          Esto es totalmente opcional. Si deseas ser parte de nuestras pruebas piloto o recibir noticias del lanzamiento, déjanos tu contacto.
+        </p>
+
+        <div class="form-group">
+          <label for="inputName" class="form-label">Nombre Completo</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-user input-icon"></i>
+            <input type="text" id="inputName" class="form-control" placeholder="Ej. Juan Pérez">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPhone" class="form-label">Número de Teléfono</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone-flip input-icon"></i>
+            <input type="tel" id="inputPhone" class="form-control" placeholder="Ej. +52 55 1234 5678">
+          </div>
+        </div>
+
+        <div class="security-note">
+          <i class="fa-solid fa-lock"></i>
+          <span>Tus datos están protegidos y nunca los compartiremos con terceros.</span>
+        </div>
+      </div>
+
+      <div class="survey-footer">
+        <button id="btnContactBack" class="btn btn-secondary">
+          <i class="fa-solid fa-chevron-left"></i> Atrás
+        </button>
+        <button id="btnSubmit" class="btn btn-success">
+          Enviar Encuesta <i class="fa-regular fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Screen 4: Success / Thank You -->
+    <div class="survey-screen" id="screenSuccess" style="display: none;">
+      <div class="screen-content text-center py-5">
+        <div class="success-animation">
+          <div class="checkmark-circle">
+            <div class="background"></div>
+            <div class="checkmark draw"></div>
+          </div>
+        </div>
+        <h1 class="success-title">¡Muchas gracias!</h1>
+        <p class="subtitle">
+          Tus respuestas se han guardado de forma segura. Tu valiosa opinión nos ayudará a construir una plataforma transparente y segura para todos.
+        </p>
+        <div class="success-details-card">
+          <h4>¿Qué sigue?</h4>
+          <p>Analizaremos las respuestas de la comunidad para priorizar las funcionalidades que garanticen seguridad y confianza en los servicios contratados.</p>
+        </div>
+        <button id="btnRestart" class="btn btn-secondary">
+          Responder Otra Vez <i class="fa-solid fa-rotate-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Link -->
+  <script src="app.js"></script>
+</body>
+</html>
